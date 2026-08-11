@@ -33,8 +33,8 @@ contract SimpleAccountTest is Test {
         bytes32 accountGasLimits = _pack(verificationGasLimit, callGasLimit);
 
         // TODO: pick fee values, e.g. maxPriorityFeePerGas = 1 gwei, maxFeePerGas = 10 gwei
-        uint128 maxPriorityFeePerGas = 1 wei ;
-        uint128 maxFeePerGas = 10 wei ;
+        uint128 maxPriorityFeePerGas = 1 wei;
+        uint128 maxFeePerGas = 10 wei;
         bytes32 gasFees = _pack(maxPriorityFeePerGas, maxFeePerGas);
 
         // ask EntryPoint for the correct nonce instead of hardcoding 0
