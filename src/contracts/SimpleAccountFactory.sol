@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 import "./SimpleAccount.sol";
 
 contract SimpleAccountFactory {
-    // I need to create store a reference to.... what ? think: does the facotry need to know about EnytrPoint or just deploy SimpleAccount instances? 
+    // I need to create store a reference to.... what ? think: does the facotry need to know about EnytrPoint or just deploy SimpleAccount instances?
 
     function createAccount(address owner, uint256 salt) public returns (SimpleAccount) {
         // step 1: figure out what address this WOULD be deployed to
@@ -27,9 +27,9 @@ contract SimpleAccountFactory {
         // - initCode is the creation bytecode with the owner baked in as the
         //   constructor argument, then hashed
         bytes32 bytecodeHash = keccak256(abi.encodePacked(type(SimpleAccount).creationCode, abi.encode(owner)));
-        address addr = address(uint160(uint256(keccak256(abi.encodePacked(
-            bytes1(0xff), address(this), bytes32(salt), bytecodeHash)
-        ))));
+        address addr = address(
+            uint160(uint256(keccak256(abi.encodePacked(bytes1(0xff), address(this), bytes32(salt), bytecodeHash))))
+        );
         return addr;
     }
 }
