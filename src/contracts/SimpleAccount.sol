@@ -7,8 +7,10 @@ import {SIG_VALIDATION_FAILED, SIG_VALIDATION_SUCCESS} from "account-abstraction
 
 contract SimpleAccount is IAccount {
     address public owner;
+    address public immutable entryPoint;
 
-    constructor(address _owner) {
+    constructor(address _entryPoint, address _owner) {
+        entryPoint = _entryPoint;
         owner = _owner;
     }
 
@@ -27,5 +29,17 @@ contract SimpleAccount is IAccount {
         (bool success,) = payable(msg.sender).call{value: missingAccountFunds}("");
         require(success, "Trasnfer failed");
         return SIG_VALIDATION_SUCCESS;
+    }
+
+    // Standard AA execute: lets the account make arbitrary calls. Allowed only
+    // when reached via a UserOp (msg.sender == entryPoint) or by the owner
+    // directly — mirrors the reference SimpleAccount's _requireForExecute().
+    function execute(address dest, uint256 value, bytes calldata func) external {
+        require(
+            msg.sender == owner || msg.sender == entryPoint,
+            "SimpleAccount: not owner or EntryPoint"
+        );
+        (bool success,) = dest.call{value: value}(func);
+        require(success, "SimpleAccount: execute failed");
     }
 }

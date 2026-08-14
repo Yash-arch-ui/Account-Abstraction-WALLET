@@ -26,8 +26,7 @@ contract TokenPaymaster is IPaymaster {
         */
         require(msg.sender == entryPoint, "TokenPaymaster: not from EntryPoint");
         // 1. ensure the caller is the trusted EntryPoint contract to prevent unauthorized invocations
-        // 2.
-        address sender = userOp.sender; //mextract the users account address
+        address sender = userOp.sender; //extract the users account address
         bytes memory customData = userOp.paymasterAndData; // extract the paymasterAndData field from the user operation
 
         // 3. maxTokenCost = maxCost*exchangeRate/PrecisionFactor
